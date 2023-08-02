@@ -33,16 +33,17 @@ const Header = () => {
 
   const headerStyle = {
     backgroundColor: '#394359', // 设置为你想要的颜色值
+    height: '90px'
   };
 
 
   return (
     <header>
-      <Navbar style={headerStyle} variant='dark' expand='lg' collapseOnSelect>
+      <Navbar style={headerStyle} variant='dark' expand='lg' collapseOnSelect >
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>
-              <img src={brand} alt='brand' style={{width:'120px', height:'120px'}}/>
+              <img src={brand} alt='brand' style={{width:'80px', height:'80px'}}/>
               <span style={{ fontSize: '30px' }}>  N a i l P a r t y</span>
             </Navbar.Brand>
           </LinkContainer>
