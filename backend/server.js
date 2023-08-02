@@ -3,6 +3,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
+import http from 'http';
+import { Server } from 'socket.io';
 
 dotenv.config();
 import connectDB from './config/db.js';
@@ -12,6 +14,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
+
 const port = process.env.PORT || 8000;
 
 connectDB();
@@ -19,9 +22,30 @@ connectDB();
 const app = express();
 app.use(cors());
 
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
+
+io.origins('*:*');
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // 接收来自客户端的消息，并广播给所有客户端
+  socket.on('chat message', (message) => {
+    console.log('Message received: ', message);
+    io.emit('chat message', message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+});
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
