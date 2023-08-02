@@ -25,9 +25,6 @@ app.use(cors());
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
-io.origins('*:*');
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
